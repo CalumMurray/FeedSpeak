@@ -1,0 +1,34 @@
+#!/bin/bash
+
+cd ~/FeedSpeak
+
+TOMCAT_INIT=/etc/init.d/tomcat7;
+OLD_DEPLOYMENT=/var/lib/tomcat7/webapps/ROOT
+
+#get changes from git
+echo "Updating from remote repository..."
+git reset --hard origin/master;
+git pull;
+
+chmod +x deploy
+
+#shutdown tomcat while we redeploy
+echo "Stopping tomcat..."
+sudo $TOMCAT_INIT stop;
+
+#remove previous build
+echo "Removing previous build..."
+sudo rm -r "$OLD_DEPLOYMENT";
+sudo rm "$OLD_DEPLOYMENT.war";
+
+#build with dependencies
+echo "Making new build..."
+sudo mvn package;
+
+#start tomcat again
+echo "Restarting tomcat..."
+sudo $TOMCAT_INIT start;
+
+#remove target dir
+echo "Cleaning up compile time dependencies.."
+sudo mvn clean;
