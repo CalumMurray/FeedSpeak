@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.twilio.sdk.verbs.TwiMLResponse;
 import com.twilio.sdk.verbs.Verb;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,6 +30,9 @@ public class FeedSpeakServlet extends HttpServlet {
     public static final String ACCOUNT_SID = "AC.....";
     public static final String AUTH_TOKEN = ".......";
 
+    private HashMap<String, String> callers = new HashMap<String, String>();
+    private TwiMLResponse twimlResponse;
+    private String message;
         
     /**
      * Handles the HTTP
@@ -56,16 +60,27 @@ public class FeedSpeakServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // Create a dict of people we know.
         //TODO: UserAccounts with mapping to source feed preferences in SQLite?
-        HashMap<String, String> callers = new HashMap<String, String>();
         callers.put("+447933298892", "Calum");
         callers.put("+447951751012", "Jack");
         //...
  
         //Get caller's number
         String fromNumber = request.getParameter("From");
-        String knownCaller = callers.get(fromNumber);
         
+        twimlResponse = new TwiMLResponse();
+        
+        formulateSayMessage();
+        
+        //Send response back to Twilio Server
+        response.setContentType("application/xml");
+        response.getWriter().print(twimlResponse.toXML());
+
+    }
+
+
+    private void formulateSayMessage() {
         String name;
+        String knownCaller = callers.get(fromNumber); 
         if (knownCaller == null) {
             // Use a generic name - No user account
             name = "Monkey";
@@ -73,19 +88,27 @@ public class FeedSpeakServlet extends HttpServlet {
             // Use the caller's name - Existing customer
             name = knownCaller;
         }
-        TwiMLResponse twimlResponse = new TwiMLResponse();
-        Verb sayVerb = new Verb("Say", "Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well.");
+        
+        Verb sayVerb = new Verb("Say", getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        //TODO: Other feeds...
+        
         
         try {
             twimlResponse.append(sayVerb);
+            //TODO: Other feeds...
         } 
         catch (TwiMLException ex) {
-            System.err.println("Problem appending SAY verb to TwiMLResponse");
+            System.err.println("Problem appending SAY verb(s) to TwiMLResponse");
         }
-        
-        response.setContentType("application/xml");
-        response.getWriter().print(twimlResponse.toXML());
-
+    }
+    
+    private String getUsersTweets()
+    
+        message = "Twitter feeds:";
+        List<String> tweets = new YQL().getTweets();
+        for (String tweet : tweets)
+            message += tweet;
+        return message;
     }
 
 }
