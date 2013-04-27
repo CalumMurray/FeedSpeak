@@ -26,7 +26,7 @@ import java.util.logging.Logger;
  *
  * @author Calum
  */
-@WebServlet(name = "FeedSpeakServlet", urlPatterns = {"/"})
+@WebServlet(name = "FeedSpeakServlet", urlPatterns = {"/tweets"})
 public class FeedSpeakServlet extends HttpServlet {
 
     public static final String ACCOUNT_SID = "AC.....";
@@ -60,6 +60,8 @@ public class FeedSpeakServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        doPost(request, response);
+        
     }
 
     /**
@@ -110,7 +112,7 @@ public class FeedSpeakServlet extends HttpServlet {
             name = callerName;
         }
 
-        Verb sayVerb = new Verb("Say", "Tweets for " + name + " : " + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        Verb sayVerb = new Verb("Say", "Tweets for " + name + " : ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
         //TODO: Other feeds...
 
 
