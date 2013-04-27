@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 //Twilio imports
 import com.twilio.sdk.verbs.TwiMLResponse;
 import com.twilio.sdk.verbs.Verb;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -53,9 +54,24 @@ public class FeedSpeakServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-                
+        // Create a dict of people we know. UserAccounts in SQLite?
+        HashMap<String, String> callers = new HashMap<String, String>();
+        callers.put("+447933298892", "Calum");
+        callers.put("+447951751012", "Jack");
+       //...
+ 
+        String fromNumber = request.getParameter("From");
+        String knownCaller = callers.get(fromNumber);
+        String name;
+        if (knownCaller == null) {
+            // Use a generic message
+            name = "Monkey";
+        } else {
+            // Use the caller's name
+            name = knownCaller;
+        }
         TwiMLResponse twimlResponse = new TwiMLResponse();
-        Verb sayVerb = new Verb("Say", "Talking through user's feeds.");
+        Verb sayVerb = new Verb("Say", "Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well.");
         
         try {
             twimlResponse.append(sayVerb);
