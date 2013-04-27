@@ -22,7 +22,7 @@ import org.json.JSONObject;
  * @author Calum
  */
 public class BBC {
-    private static final String BBC_YQL_URL = "http://query.yahooapis.com/v1/public/yql?q=SELECT%20title%20From%20rss%20Where%20url%3D'http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
+    private static final String BBC_YQL_URL = "http://query.yahooapis.com/v1/public/yql?q=SELECT%20title%20From%20rss%20Where%20url%3D'http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml'%20LIMIT%2020&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
     
     public static List<String> getNewsHeadlines()
     {
@@ -61,8 +61,10 @@ public class BBC {
         ArrayList<String> headlines = new ArrayList<String>();
         JSONObject jsonObject = new JSONObject(json);
                 
-        JSONArray jsonArray = jsonObject.getJSONObject("query").getJSONArray("results");
-
+        JSONObject query = jsonObject.getJSONObject("query");
+        JSONObject results = query.getJSONObject("results");
+        JSONArray jsonArray = results.getJSONArray("item");
+        
         for(int i=0; i<jsonArray.length(); i++){
             JSONObject currentHeadline = jsonArray.getJSONObject(i);
             headlines.add(currentHeadline.getString("title"));

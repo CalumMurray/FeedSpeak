@@ -115,11 +115,11 @@ public class FeedSpeakServlet extends HttpServlet {
 
         Verb sayTweetsVerb = new Verb("Say", "Tweets for " + name + ": " + StringEscapeUtils.escapeXml(getUsersTweets()));// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
         //TODO: Other feeds...getUsersBBCNewsFeed
-//        Verb sayBBCVerb = new Verb("Say", "BBC News Feed for " + name + ": " + StringEscapeUtils.escapeXml(getUsersBBCNewsFeed()));
+        Verb sayBBCVerb = new Verb("Say", "BBC News Feed for " + name + ": " + StringEscapeUtils.escapeXml(getUsersBBCNewsFeed()));
 
         try {
             twimlResponse.append(sayTweetsVerb);
-           // twimlResponse.append(sayBBCVerb);
+            twimlResponse.append(sayBBCVerb);
             //TODO: Other feeds...
         } catch (TwiMLException ex) {
             System.err.println("Problem appending SAY verb(s) to TwiMLResponse");
