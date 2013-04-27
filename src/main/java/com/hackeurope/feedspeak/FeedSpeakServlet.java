@@ -63,7 +63,7 @@ public class FeedSpeakServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //doPost(request, response);
         DatabaseConnector db = new DatabaseConnector();
-        
+        db.execute("INSERT INTO users VALUES (\"2\", \"01241\")");
     }
 
     /**
