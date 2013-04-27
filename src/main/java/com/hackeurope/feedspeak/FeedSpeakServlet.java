@@ -130,7 +130,7 @@ public class FeedSpeakServlet extends HttpServlet {
     private String getUsersTweets() {
 
         String tweetMessage = "";
-        List<String> tweets = YQL.getTweets();
+        List<String> tweets = TwitterFeed.getTweets();
         for (String tweet : tweets) {
             tweetMessage += tweet + " ";
         }
