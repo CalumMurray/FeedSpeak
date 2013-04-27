@@ -21,6 +21,8 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.lang.StringEscapeUtils;
 
 /**
  *
@@ -112,7 +114,9 @@ public class FeedSpeakServlet extends HttpServlet {
             name = callerName;
         }
 
-        Verb sayVerb = new Verb("Say", "Tweets for " + name + " : ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        Verb sayVerb = new Verb(
+                "Say", "Tweets for " + name + " : " + 
+                StringEscapeUtils.escapeXml(getUsersTweets()));/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/
         //TODO: Other feeds...
 
 
