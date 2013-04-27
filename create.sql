@@ -9,6 +9,9 @@ USE `FeedSpeakDB`;
 CREATE  TABLE IF NOT EXISTS `FeedSpeakDB`.`users` (
   `id` INT NOT NULL ,
   `phone_number` VARCHAR(15) NOT NULL ,
+  `name` VARCHAR(255) NOT NULL ,
+  `twitter_oauth_token` TEXT ,
+  `twitter_oauth_token_secret` TEXT ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `phone_number_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB;
