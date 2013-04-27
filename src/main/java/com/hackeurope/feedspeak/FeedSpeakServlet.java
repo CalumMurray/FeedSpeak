@@ -112,11 +112,12 @@ public class FeedSpeakServlet extends HttpServlet {
             // Use the caller's name - Existing customer
             name = callerName;
         }
-
+        
         Verb sayTweetsVerb = new Verb("Say", "Tweets for " + name + ": " + StringEscapeUtils.escapeXml(getUsersTweets()));// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        sayTweetsVerb.set("name", "en-gb");
         //TODO: Other feeds...getUsersBBCNewsFeed
         Verb sayBBCVerb = new Verb("Say", "BBC News Feed for " + name + ": " + StringEscapeUtils.escapeXml(getUsersBBCNewsFeed()));
-
+        sayBBCVerb.set("name", "en-gb");
         try {
             twimlResponse.append(sayTweetsVerb);
             twimlResponse.append(sayBBCVerb);
