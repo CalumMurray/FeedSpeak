@@ -177,9 +177,9 @@ public class FeedSpeakServlet extends HttpServlet {
             verb.set("name", "en-gb");
 
             if (maleVoice) {
-                verb.set("Voice", "male");
+                verb.set("Voice", "man");
             } else {
-                verb.set("Voice", "female");
+                verb.set("Voice", "woman");
             }
             maleVoice = !maleVoice;
 
