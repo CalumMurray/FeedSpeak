@@ -116,28 +116,28 @@ public class FeedSpeakServlet extends HttpServlet {
 
         appendTweets(name);
 
-        //TODO: Other feeds...getUsersBBCNewsFeed
+        //TODO: Other feeds...
         appendBBC(name);
     }
 
-    private String getUsersTweets() {
-
-        String tweetMessage = "";
-        List<String> tweets = TwitterFeed.getTweets();
-        for (String tweet : tweets) {
-            tweetMessage += tweet + " ";
-        }
-        return tweetMessage;
-    }
-
-    private String getUsersBBCNewsFeed() {
-        String bbcMessage = "";
-        List<String> headlines = BBC.getNewsHeadlines();
-        for (String headline : headlines) {
-            bbcMessage += headline + " ";
-        }
-        return bbcMessage;
-    }
+//    private String getUsersTweets() {
+//
+//        String tweetMessage = "";
+//        List<String> tweets = TwitterFeed.getTweets();
+//        for (String tweet : tweets) {
+//            tweetMessage += tweet + " ";
+//        }
+//        return tweetMessage;
+//    }
+//
+//    private String getUsersBBCNewsFeed() {
+//        String bbcMessage = "";
+//        List<String> headlines = BBC.getNewsHeadlines();
+//        for (String headline : headlines) {
+//            bbcMessage += headline + " ";
+//        }
+//        return bbcMessage;
+//    }
 
     private void appendBBC(String name) {
         Verb sayBBCVerb = new Verb("Say", "BBC Headlines for " + name + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
