@@ -7,23 +7,24 @@ CREATE SCHEMA IF NOT EXISTS `FeedSpeakDB` DEFAULT CHARACTER SET utf8 COLLATE utf
 USE `FeedSpeakDB`;
 
 CREATE  TABLE IF NOT EXISTS `FeedSpeakDB`.`users` (
-  `id` INT NOT NULL ,
+  `user_id` INT NOT NULL AUTO_INCREMENT,
   `phone_number` VARCHAR(15) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  UNIQUE INDEX `phone_number_UNIQUE` (`id` ASC) )
+  `name` VARCHAR(45) NOT NULL ,
+  `oauth_token` VARCHAR(255) NULL ,
+  `oauth_token_secret` VARCHAR(255) NULL ,
+  PRIMARY KEY (`user_id`) ,
+  UNIQUE INDEX `phone_number_UNIQUE` (`user_id` ASC) )
 ENGINE = InnoDB;
 
 CREATE  TABLE IF NOT EXISTS `FeedSpeakDB`.`sources` (
-  `source_id` INT NOT NULL ,
-  `name` VARCHAR(45) NULL ,
-  `url` VARCHAR(45) NULL ,
-  `method` VARCHAR(45) NULL ,
+  `source_id` INT NOT NULL AUTO_INCREMENT,
+  `source_name` VARCHAR(45) NULL ,
   PRIMARY KEY (`source_id`) )
 ENGINE = InnoDB;
 
 
 CREATE  TABLE IF NOT EXISTS `FeedSpeakDB`.`user_sources` (
-  `id` INT NOT NULL ,
+  `id` INT NOT NULL AUTO_INCREMENT,
   `user_id` INT NULL ,
   `source_id` INT NULL ,
   PRIMARY KEY (`id`) ,
@@ -31,7 +32,7 @@ CREATE  TABLE IF NOT EXISTS `FeedSpeakDB`.`user_sources` (
   INDEX `fk_source_id_idx` (`source_id` ASC) ,
   CONSTRAINT `fk_user_id`
     FOREIGN KEY (`user_id` )
-    REFERENCES `FeedSpeakDB`.`users` (`id` )
+    REFERENCES `FeedSpeakDB`.`users` (`user_id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_source_id`
