@@ -34,6 +34,8 @@ public class FeedSpeakServlet extends HttpServlet {
     private TwiMLResponse twimlResponse;
     private String message;
         
+    private String fromNumber;
+    private String callerName;
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -65,7 +67,8 @@ public class FeedSpeakServlet extends HttpServlet {
         //...
  
         //Get caller's number
-        String fromNumber = request.getParameter("From");
+        fromNumber = request.getParameter("From");
+        callerName = callers.get(fromNumber); 
         
         twimlResponse = new TwiMLResponse();
         
@@ -80,13 +83,13 @@ public class FeedSpeakServlet extends HttpServlet {
 
     private void formulateSayMessage() {
         String name;
-        String knownCaller = callers.get(fromNumber); 
-        if (knownCaller == null) {
+        
+        if (callerName == null) {
             // Use a generic name - No user account
             name = "Monkey";
         } else {
             // Use the caller's name - Existing customer
-            name = knownCaller;
+            name = callerName;
         }
         
         Verb sayVerb = new Verb("Say", getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
@@ -102,13 +105,13 @@ public class FeedSpeakServlet extends HttpServlet {
         }
     }
     
-    private String getUsersTweets()
+    private String getUsersTweets() {
     
-        message = "Twitter feeds:";
+        String tweetMessage = "Twitter feeds: ";
         List<String> tweets = new YQL().getTweets();
         for (String tweet : tweets)
-            message += tweet;
-        return message;
+            tweetMessage += tweet;
+        return tweetMessage;
     }
 
 }
