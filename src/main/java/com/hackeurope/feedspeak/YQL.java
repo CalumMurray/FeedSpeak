@@ -5,6 +5,7 @@
 package com.hackeurope.feedspeak;
 
 import java.io.IOException;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.FileHandler;
 import java.util.logging.Handler;
@@ -41,7 +42,7 @@ public class YQL {
         initLogFile();
         Logger.getLogger(YQL.class.getName()).log(Level.INFO, "getting tweets");
         
-        ConfigurationBuilder cb = new ConfigurationBuilder();
+                ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
         .setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg")
         .setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA")
@@ -51,7 +52,7 @@ public class YQL {
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();
         
-        List<String> packagedStatus = null;
+        List<String> packagedStatus = new LinkedList<String>();
         try {
             User user = twitter.verifyCredentials();
             
