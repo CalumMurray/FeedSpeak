@@ -4,7 +4,10 @@
  */
 package com.hackeurope.feedspeak;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.logging.FileHandler;
+import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import twitter4j.Status;
@@ -22,7 +25,21 @@ import twitter4j.api.*;
  */
 public class YQL {
     
+    private static void initLogFile() {
+        try {
+            Handler fileHandler = new FileHandler("/tmp/log");
+            Logger.getLogger("").addHandler(fileHandler);
+
+        } catch (IOException ex) {
+            Logger.getLogger(YQL.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SecurityException ex) {
+            Logger.getLogger(YQL.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public static List<String> getTweets(){
+        Logger.getLogger(YQL.class.getName()).log(Level.INFO, "getting tweets");
+        
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true)
         .setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg")

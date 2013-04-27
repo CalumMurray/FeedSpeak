@@ -92,7 +92,7 @@ public class FeedSpeakServlet extends HttpServlet {
             name = callerName;
         }
         
-        Verb sayVerb = new Verb("Say", getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        Verb sayVerb = new Verb("Say", "Tweets for " + name + " : " + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
         //TODO: Other feeds...
         
         
@@ -110,7 +110,7 @@ public class FeedSpeakServlet extends HttpServlet {
         String tweetMessage = "Twitter feeds: ";
         List<String> tweets = new YQL().getTweets();
         for (String tweet : tweets)
-            tweetMessage += tweet;
+            tweetMessage += tweet + " ";
         return tweetMessage;
     }
 
