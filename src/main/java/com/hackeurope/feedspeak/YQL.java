@@ -38,6 +38,7 @@ public class YQL {
     }
     
     public static List<String> getTweets(){
+        initLogFile();
         Logger.getLogger(YQL.class.getName()).log(Level.INFO, "getting tweets");
         
         ConfigurationBuilder cb = new ConfigurationBuilder();
