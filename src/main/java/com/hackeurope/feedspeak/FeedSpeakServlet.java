@@ -21,7 +21,6 @@ import java.util.logging.FileHandler;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.StringEscapeUtils;
 
 /**
@@ -114,14 +113,13 @@ public class FeedSpeakServlet extends HttpServlet {
             name = callerName;
         }
 
-        Verb sayVerb = new Verb(
-                "Say", "Tweets for " + name + " : " + 
-                StringEscapeUtils.escapeXml(getUsersTweets()));/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/
-        //TODO: Other feeds...
-
+        Verb sayTweetsVerb = new Verb("Say", "Tweets for " + name + ": " + StringEscapeUtils.escapeXml(getUsersTweets()));// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        //TODO: Other feeds...getUsersBBCNewsFeed
+//        Verb sayBBCVerb = new Verb("Say", "BBC News Feed for " + name + ": " + StringEscapeUtils.escapeXml(getUsersBBCNewsFeed()));
 
         try {
-            twimlResponse.append(sayVerb);
+            twimlResponse.append(sayTweetsVerb);
+           // twimlResponse.append(sayBBCVerb);
             //TODO: Other feeds...
         } catch (TwiMLException ex) {
             System.err.println("Problem appending SAY verb(s) to TwiMLResponse");
@@ -130,11 +128,20 @@ public class FeedSpeakServlet extends HttpServlet {
 
     private String getUsersTweets() {
 
-        String tweetMessage = "Twitter feeds: ";
-        List<String> tweets = new YQL().getTweets();
+        String tweetMessage = "";
+        List<String> tweets = YQL.getTweets();
         for (String tweet : tweets) {
             tweetMessage += tweet + " ";
         }
         return tweetMessage;
+    }
+    
+    private String getUsersBBCNewsFeed() {
+        String bbcMessage = "";
+        List<String> headlines = BBC.getNewsHeadlines();
+        for (String headline : headlines) {
+            bbcMessage += headline + " ";
+        }
+        return bbcMessage;
     }
 }
