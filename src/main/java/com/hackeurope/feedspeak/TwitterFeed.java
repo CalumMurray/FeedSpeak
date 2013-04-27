@@ -51,7 +51,7 @@ public class TwitterFeed {
         .setOAuthAccessTokenSecret("WUlVHwaAis8eln16vWSajb4yTsPo0vaGs0PjgHmUo");
         
         TwitterFactory tf = new TwitterFactory(cb.build());
-        TwitterFeed twitter = tf.getInstance();
+        Twitter twitter = tf.getInstance();
         
         List<String> packagedStatus = new LinkedList<String>();
         try {

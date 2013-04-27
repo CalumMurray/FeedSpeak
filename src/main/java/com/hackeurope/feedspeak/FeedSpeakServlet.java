@@ -162,7 +162,7 @@ public class FeedSpeakServlet extends HttpServlet {
         try {
             twimlResponse.append(sayTweetsVerb);
 
-            List<String> tweets = YQL.getTweets();
+            List<String> tweets = TwitterFeed.getTweets();
             appendList(sayTweetsVerb, tweets);
 
         } catch (TwiMLException ex) {
