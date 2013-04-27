@@ -156,7 +156,7 @@ public class FeedSpeakServlet extends HttpServlet {
 
     private void appendTweets(String name) {
         Verb sayTweetsVerb = new Verb("Say", "Tweets for " + name + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
-        sayTweetsVerb.set("name", "en-gb");
+        sayTweetsVerb.set("language", "en-gb");
 
         try {
             twimlResponse.append(sayTweetsVerb);
@@ -174,12 +174,12 @@ public class FeedSpeakServlet extends HttpServlet {
 
         for (String tweet : list) {
             verb = new Verb("Say", StringEscapeUtils.escapeXml(tweet));
-            verb.set("name", "en-gb");
+            verb.set("language", "en-gb");
 
             if (maleVoice) {
-                verb.set("Voice", "man");
+                verb.set("voice", "man");
             } else {
-                verb.set("Voice", "woman");
+                verb.set("voice", "woman");
             }
             maleVoice = !maleVoice;
 
