@@ -16,6 +16,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.twitter4j</groupId>
+            <artifactId>twitter4j</artifactId>
+            <version>3.0.3</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.servicemix.bundles</groupId>
+            <artifactId>org.apache.servicemix.bundles.twitter4j</artifactId>
+            <version>3.0.3_1</version>
+            <type>jar</type>
+        </dependency>
+        <dependency>
             <groupId>javax</groupId>
             <artifactId>javaee-web-api</artifactId>
             <version>6.0</version>
