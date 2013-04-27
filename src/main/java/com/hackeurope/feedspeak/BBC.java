@@ -24,7 +24,7 @@ import org.json.JSONObject;
 public class BBC {
     private static final String BBC_YQL_URL = "http://query.yahooapis.com/v1/public/yql?q=SELECT%20title%20From%20rss%20Where%20url%3D'http%3A%2F%2Ffeeds.bbci.co.uk%2Fnews%2Frss.xml'&format=json&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys&callback=";
     
-    public List<String> getNewsHeadlines()
+    public static List<String> getNewsHeadlines()
     {
         try {
 			
