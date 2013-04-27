@@ -61,7 +61,8 @@ public class FeedSpeakServlet extends HttpServlet {
      */
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost(request, response);
+        //doPost(request, response);
+        DatabaseConnector db = new DatabaseConnector();
         
     }
 
@@ -77,11 +78,12 @@ public class FeedSpeakServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         initLogFile();
-        
+
         // Create a dict of people we know.
         //TODO: UserAccounts with mapping to source feed preferences in SQLite?
         callers.put("+447933298892", "Calum");
         callers.put("+447951751012", "Jack");
+        callers.put("+447835218616", "Neil");
         //...
 
         //Get caller's number
@@ -90,9 +92,9 @@ public class FeedSpeakServlet extends HttpServlet {
 
         twimlResponse = new TwiMLResponse();
 
-        try{
+        try {
             formulateSayMessage();
-        }catch(Exception e){
+        } catch (Exception e) {
             Logger.getLogger(FeedSpeakServlet.class.getName()).log(Level.SEVERE, null, e);
         }
 
@@ -112,19 +114,11 @@ public class FeedSpeakServlet extends HttpServlet {
             // Use the caller's name - Existing customer
             name = callerName;
         }
-        
-        Verb sayTweetsVerb = new Verb("Say", "Tweets for " + name + ": " + StringEscapeUtils.escapeXml(getUsersTweets()));// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
-        sayTweetsVerb.set("name", "en-gb");
+
+        appendTweets(name);
+
         //TODO: Other feeds...getUsersBBCNewsFeed
-        Verb sayBBCVerb = new Verb("Say", "BBC News Feed for " + name + ": " + StringEscapeUtils.escapeXml(getUsersBBCNewsFeed()));
-        sayBBCVerb.set("name", "en-gb");
-        try {
-            twimlResponse.append(sayTweetsVerb);
-            twimlResponse.append(sayBBCVerb);
-            //TODO: Other feeds...
-        } catch (TwiMLException ex) {
-            System.err.println("Problem appending SAY verb(s) to TwiMLResponse");
-        }
+        appendBBC(name);
     }
 
     private String getUsersTweets() {
@@ -136,7 +130,7 @@ public class FeedSpeakServlet extends HttpServlet {
         }
         return tweetMessage;
     }
-    
+
     private String getUsersBBCNewsFeed() {
         String bbcMessage = "";
         List<String> headlines = BBC.getNewsHeadlines();
@@ -144,5 +138,53 @@ public class FeedSpeakServlet extends HttpServlet {
             bbcMessage += headline + " ";
         }
         return bbcMessage;
+    }
+
+    private void appendBBC(String name) {
+        Verb sayBBCVerb = new Verb("Say", "BBC Headlines for " + name + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        sayBBCVerb.set("name", "en-gb");
+        try {
+            twimlResponse.append(sayBBCVerb);
+
+            List<String> headlines = BBC.getNewsHeadlines();
+
+            appendList(sayBBCVerb, headlines);
+
+        } catch (TwiMLException ex) {
+            System.err.println("Problem appending SAY verb(s) to TwiMLResponse");
+        }
+    }
+
+    private void appendTweets(String name) {
+        Verb sayTweetsVerb = new Verb("Say", "Tweets for " + name + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+        sayTweetsVerb.set("language", "en");
+
+        try {
+            twimlResponse.append(sayTweetsVerb);
+
+            List<String> tweets = YQL.getTweets();
+            appendList(sayTweetsVerb, tweets);
+
+        } catch (TwiMLException ex) {
+            System.err.println("Problem appending SAY verb(s) to TwiMLResponse");
+        }
+    }
+
+    private void appendList(Verb verb, List<String> list) throws TwiMLException {
+        boolean maleVoice = true;
+
+        for (String tweet : list) {
+            verb = new Verb("Say", StringEscapeUtils.escapeXml(tweet));
+            verb.set("language", "en");
+
+            if (maleVoice) {
+                verb.set("voice", "man");
+            } else {
+                verb.set("voice", "woman");
+            }
+            maleVoice = !maleVoice;
+
+            twimlResponse.append(verb);
+        }
     }
 }

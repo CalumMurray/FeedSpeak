@@ -8,7 +8,7 @@ USE `FeedSpeakDB`;
 
 CREATE  TABLE IF NOT EXISTS `FeedSpeakDB`.`users` (
   `id` INT NOT NULL ,
-  `phone_number` VARCHAR(11) NOT NULL ,
+  `phone_number` VARCHAR(15) NOT NULL ,
   PRIMARY KEY (`id`) ,
   UNIQUE INDEX `phone_number_UNIQUE` (`id` ASC) )
 ENGINE = InnoDB;
