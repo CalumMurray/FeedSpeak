@@ -54,20 +54,23 @@ public class FeedSpeakServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Create a dict of people we know. UserAccounts in SQLite?
+        // Create a dict of people we know.
+        //TODO: UserAccounts with mapping to source feed preferences in SQLite?
         HashMap<String, String> callers = new HashMap<String, String>();
         callers.put("+447933298892", "Calum");
         callers.put("+447951751012", "Jack");
-       //...
+        //...
  
+        //Get caller's number
         String fromNumber = request.getParameter("From");
         String knownCaller = callers.get(fromNumber);
+        
         String name;
         if (knownCaller == null) {
-            // Use a generic message
+            // Use a generic name - No user account
             name = "Monkey";
         } else {
-            // Use the caller's name
+            // Use the caller's name - Existing customer
             name = knownCaller;
         }
         TwiMLResponse twimlResponse = new TwiMLResponse();
