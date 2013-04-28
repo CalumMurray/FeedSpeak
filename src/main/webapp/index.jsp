@@ -44,7 +44,7 @@
                         <!--<div class="formSubTitle">Personal Feed Preferences</div> -->
                         <p class="twitter">
 
-                            <input type="checkbox" name="web" id="twitter" />
+                            <input type="checkbox" name="twitter" id="twitter" />
                             <label for="twitter">Twitter</label>
 
                         </p>

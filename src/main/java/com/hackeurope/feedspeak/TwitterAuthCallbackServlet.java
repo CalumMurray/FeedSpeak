@@ -14,13 +14,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.apache.http.HttpRequest;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
+
 
 /**
  *
@@ -29,6 +30,8 @@ import twitter4j.conf.ConfigurationBuilder;
 @WebServlet(name = "TwitterAuthCallbackServlet", urlPatterns = {"/callback"})
 public class TwitterAuthCallbackServlet extends HttpServlet {
 
+    private ConcreteDBConnector dbConnection;
+    
     /**
      * Processes requests for both HTTP
      * <code>GET</code> and
@@ -58,7 +61,8 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             out.println("<h2>");
 
             String oauth_verifier = request.getParameter("oauth_verifier");
-
+            
+            
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
             builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
@@ -68,17 +72,13 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
 
             AccessToken accessToken = null;
             try {
-                RequestToken requestToken = twitter.getOAuthRequestToken();
-                requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
-                accessToken = twitter.getOAuthAccessToken(requestToken, oauth_verifier);
-                
-                //accessToken = twitter.getOAuthAccessToken(requestToken);
-                //accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
+                accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
 
                 out.println(accessToken.getToken());
                 out.println(accessToken.getTokenSecret());
+                storeUserDetails(request, accessToken.getToken(), accessToken.getTokenSecret());
             } catch (TwitterException ex) {
-                out.println("error" + ex.getErrorMessage());
+                out.println("error");
                 Logger.getLogger(TwitterAuthCallbackServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
@@ -131,4 +131,13 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    private void storeUserDetails(HttpServletRequest request, String oauthToken, String oauthTokenSecret) {
+        User user = (User) request.getSession().getAttribute("user");
+        user.setOauthToken(oauthToken);
+        user.setOauthTokenSecret(oauthTokenSecret);
+        
+        
+        dbConnection.addUser(user, user.isIncludeTwitter(), user.isIncludeBBC());
+    }
 }

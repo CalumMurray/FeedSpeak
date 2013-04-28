@@ -15,6 +15,9 @@ public class User {
     private String oauthToken;
     private String oauthTokenSecret;
     
+    private boolean includeTwitter;
+    private boolean includeBBC;
+    
     public User()
     {
         this(0, "", "", "", "");
@@ -64,6 +67,22 @@ public class User {
 
     public void setOauthTokenSecret(String oauthTokenSecret) {
         this.oauthTokenSecret = oauthTokenSecret;
+    }
+
+    public boolean isIncludeTwitter() {
+        return includeTwitter;
+    }
+
+    public void setIncludeTwitter(boolean includeTwitter) {
+        this.includeTwitter = includeTwitter;
+    }
+
+    public boolean isIncludeBBC() {
+        return includeBBC;
+    }
+
+    public void setIncludeBBC(boolean includeBBC) {
+        this.includeBBC = includeBBC;
     }
     
     
