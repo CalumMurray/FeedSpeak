@@ -60,9 +60,6 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             String oauth_token = request.getParameter("oauth_token");
             String oauth_verifier = request.getParameter("oauth_verifier");
 
-
-
-
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
             builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
@@ -73,9 +70,10 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             AccessToken accessToken = null;
             try {
                 RequestToken requestToken = twitter.getOAuthRequestToken();
+                requestToken = new RequestToken(oauth_token, oauth_verifier);
                 
                 accessToken = twitter.getOAuthAccessToken(requestToken);
-                accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
+                //accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
 
                 out.println(accessToken.getToken());
                 out.println(accessToken.getTokenSecret());
