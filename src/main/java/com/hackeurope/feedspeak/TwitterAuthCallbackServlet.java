@@ -30,8 +30,6 @@ import twitter4j.conf.ConfigurationBuilder;
  */
 @WebServlet(name = "TwitterAuthCallbackServlet", urlPatterns = {"/callback"})
 public class TwitterAuthCallbackServlet extends HttpServlet {
-
-    private ConcreteDBConnector dbConnection;
     
     /**
      * Processes requests for both HTTP
@@ -138,7 +136,7 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
         user.setOauthToken(oauthToken);
         user.setOauthTokenSecret(oauthTokenSecret);
         
-        
+        ConcreteDBConnector dbConnection = new ConcreteDBConnector();
         dbConnection.addUser(user, user.isIncludeTwitter(), user.isIncludeBBC());
     }
 }

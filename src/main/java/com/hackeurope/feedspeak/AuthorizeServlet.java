@@ -47,63 +47,68 @@ public class AuthorizeServlet extends HttpServlet {
         user.setName(request.getParameter("name"));
         user.setPhoneNumber(request.getParameter("phoneNumber"));
         user.setIncludeTwitter(request.getParameter("twitter") == "on" ? true : false);//Does thi give a boolean?
-        user.setIncludeBBC(request.getParameter("twitter") == "on" ? true : false);
+        user.setIncludeBBC(request.getParameter("bbc") == "on" ? true : false);
 
         request.getSession().setAttribute("user", user);
-        
-        
-        try {
-            /*            ConfigurationBuilder cb = new ConfigurationBuilder();
-             cb.setDebugEnabled(true)
-             .setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg")
-             .setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
 
-             TwitterFactory tf = new TwitterFactory(cb.build());*/
-
-            //Twitter twitter = TwitterFactory.getSingleton();
-            ConfigurationBuilder builder = new ConfigurationBuilder();
-            builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
-            builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
-            Configuration configuration = builder.build();
-            TwitterFactory factory = new TwitterFactory(configuration);
-            Twitter twitter = factory.getInstance();
-            //TwitterFactory tf = new TwitterFactory();
-            //tf.setOAuthConsumer(null, null);
+        if (user.isIncludeTwitter()) {
 
             try {
-                //twitter.setOAuthConsumer("aTR1FAEsR0hAj9w47ko9Tg", );
-            } catch (IllegalStateException ise) {
-            }
+                /*            ConfigurationBuilder cb = new ConfigurationBuilder();
+                 cb.setDebugEnabled(true)
+                 .setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg")
+                 .setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
 
-            RequestToken requestToken = twitter.getOAuthRequestToken();
-            request.getSession().setAttribute("requestToken", requestToken);
-            //twitter.getOAuthAccessToken();
-            AccessToken accessToken = null;
+                 TwitterFactory tf = new TwitterFactory(cb.build());*/
 
-            response.sendRedirect(requestToken.getAuthenticationURL());
-            
-            //request.getRequestDispatcher(requestToken.getAuthorizationURL()).forward(request, response);
+                //Twitter twitter = TwitterFactory.getSingleton();
+                ConfigurationBuilder builder = new ConfigurationBuilder();
+                builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
+                builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
+                Configuration configuration = builder.build();
+                TwitterFactory factory = new TwitterFactory(configuration);
+                Twitter twitter = factory.getInstance();
+                //TwitterFactory tf = new TwitterFactory();
+                //tf.setOAuthConsumer(null, null);
 
-            /*while (null == accessToken) {
+                try {
+                    //twitter.setOAuthConsumer("aTR1FAEsR0hAj9w47ko9Tg", );
+                } catch (IllegalStateException ise) {
+                }
+
+                RequestToken requestToken = twitter.getOAuthRequestToken();
+                request.getSession().setAttribute("requestToken", requestToken);
+                //twitter.getOAuthAccessToken();
+                AccessToken accessToken = null;
+
+                response.sendRedirect(requestToken.getAuthenticationURL());
+
+                //request.getRequestDispatcher(requestToken.getAuthorizationURL()).forward(request, response);
+
+                /*while (null == accessToken) {
                 
 
-             System.out.println("Open the following URL and grant access to your account:");
-             System.out.println(requestToken.getAuthorizationURL());
-             System.out.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
+                 System.out.println("Open the following URL and grant access to your account:");
+                 System.out.println(requestToken.getAuthorizationURL());
+                 System.out.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
 
-             try {
-             accessToken = twitter.getOAuthAccessToken();
-             } catch (TwitterException te) {
-             if (401 == te.getStatusCode()) {
-             System.out.println("Unable to get the access token.");
-             } else {
-             te.printStackTrace();
-             }
-             }
-             }*/
+                 try {
+                 accessToken = twitter.getOAuthAccessToken();
+                 } catch (TwitterException te) {
+                 if (401 == te.getStatusCode()) {
+                 System.out.println("Unable to get the access token.");
+                 } else {
+                 te.printStackTrace();
+                 }
+                 }
+                 }*/
 
-        } catch (TwitterException ex) {
-            Logger.getLogger(AuthorizeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (TwitterException ex) {
+                Logger.getLogger(AuthorizeServlet.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }else{
+            ConcreteDBConnector dbConnection = new ConcreteDBConnector();
+            dbConnection.addUser(user, user.isIncludeTwitter(), user.isIncludeBBC());
         }
     }
 
