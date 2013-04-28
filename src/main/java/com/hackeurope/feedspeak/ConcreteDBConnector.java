@@ -45,7 +45,7 @@ public class ConcreteDBConnector extends DatabaseConnector {
                 String insertLinkString = "INSERT INTO user_sources (user_id, source_id) VALUES (?, ?);";
                 PreparedStatement prepLinkStatement = connection.prepareStatement(insertLinkString);
                 prepLinkStatement.setInt(1, userID);
-                prepLinkStatement.setInt(2, 0);//Twitter
+                prepLinkStatement.setInt(2, 1);//Twitter
                 prepLinkStatement.executeUpdate();
             }
             if (bbc)
@@ -54,7 +54,7 @@ public class ConcreteDBConnector extends DatabaseConnector {
                 PreparedStatement prepLinkStatement = connection.prepareStatement(insertLinkString);
             
                 prepLinkStatement.setInt(1, userID);
-                prepLinkStatement.setInt(2, 1);//BBC
+                prepLinkStatement.setInt(2, 2);//BBC
                 prepLinkStatement.executeUpdate();
             }
             
