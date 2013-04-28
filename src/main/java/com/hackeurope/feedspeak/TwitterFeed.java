@@ -34,7 +34,7 @@ public class TwitterFeed {
         }
     }
     
-    public static List<String> getTweets(){
+    public static List<String> getTweets(String oauthAccessToken, String oAuthAccessTokenSecret){
         initLogFile();
         Logger.getLogger(TwitterFeed.class.getName()).log(Level.INFO, "getting tweets");
         
@@ -42,8 +42,8 @@ public class TwitterFeed {
         cb.setDebugEnabled(true)
         .setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg")
         .setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA")
-        .setOAuthAccessToken("1110145321-wYAlo6r3Oms2gHMlK8yRyqfPTd93oWCXqbU4M8C")
-        .setOAuthAccessTokenSecret("WUlVHwaAis8eln16vWSajb4yTsPo0vaGs0PjgHmUo");
+        .setOAuthAccessToken(oauthAccessToken)
+        .setOAuthAccessTokenSecret(oAuthAccessTokenSecret);
         
         TwitterFactory tf = new TwitterFactory(cb.build());
         Twitter twitter = tf.getInstance();

@@ -185,7 +185,7 @@ public class FeedSpeakServlet extends HttpServlet {
         try {
             twimlResponse.append(sayTweetsVerb);
 
-            List<String> tweets = TwitterFeed.getTweets();
+            List<String> tweets = TwitterFeed.getTweets(user.getOauthToken(), user.getOauthTokenSecret());
             appendList(sayTweetsVerb, tweets);
 
         } catch (TwiMLException ex) {
