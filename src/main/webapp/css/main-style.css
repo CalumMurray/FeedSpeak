@@ -18,6 +18,10 @@ p
     color: #617798;
 }
 
+.feedTitle{
+    font-size: 20px;
+}
+
 .user_info {
 
 }
@@ -51,7 +55,7 @@ h1 {
 }
 
 input[type=checkbox]:checked + label:before {
-    content: "\2713";
+
     text-shadow: 1px 1px 1px rgba(0, 0, 0, .2);
     font-size: 15px;
     color: #f3f3f3;

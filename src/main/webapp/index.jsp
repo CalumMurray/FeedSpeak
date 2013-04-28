@@ -46,7 +46,7 @@
                     
                     <br>
                     <div class="feeds"> 
-                        <div class="formSubTitle"><p>Personal Feed Preferences</p></div>
+                        <div class="formSubTitle"><p class="feedTitle">Personal Feed Preferences</p></div>
                         <p class="twitter">
 
                             <input type="checkbox" name="twitter" id="twitter" />
@@ -67,7 +67,7 @@
             </form>
 
 
-            <div id="ft" role="contentinfo"><p>Yahoo! Hack Europe, London 2013. Powered by YUI & Twilio. </p><a href="https://github.com/CalumMurray/FeedSpeak">FeedSpeak Github Repository</a></div> 
+            <div id="ft" role="contentinfo"><p>Yahoo! Hack Europe, London 2013. Powered by YQL & Twilio. </p><a href="https://github.com/CalumMurray/FeedSpeak">FeedSpeak Github Repository</a></div> 
         </div> 
     </body>
 </html>
