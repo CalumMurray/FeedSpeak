@@ -78,7 +78,7 @@ public class ConcreteDBConnector extends DatabaseConnector {
             
             while (resultSet.next())
             {
-                newUser.setId(resultSet.getInt("id"));
+                newUser.setId(resultSet.getInt("user_id"));
                 newUser.setPhoneNumber(resultSet.getString("phone_number"));
                 newUser.setName(resultSet.getString("name"));
                 newUser.setOauthToken(resultSet.getString("oauth_token"));
@@ -111,7 +111,7 @@ public class ConcreteDBConnector extends DatabaseConnector {
             
             while (resultSet.next())
             {
-                sources.add(resultSet.getString(0));
+                sources.add(resultSet.getString(1));
             }
             
             closeConnection();

@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 //Twilio imports
 import com.twilio.sdk.verbs.TwiMLResponse;
 import com.twilio.sdk.verbs.Verb;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.logging.FileHandler;
@@ -33,12 +34,12 @@ public class FeedSpeakServlet extends HttpServlet {
 //    public static final String ACCOUNT_SID = "AC.....";
 //    public static final String AUTH_TOKEN = ".......";
     private HashMap<String, String> callers = new HashMap<String, String>();
-    private ConcreteDBConnector dbConnection;
+    private ConcreteDBConnector dbConnection = new ConcreteDBConnector();
     private TwiMLResponse twimlResponse;
 
     private String fromNumber;
     private User user;
-    private List<String> preferredSources;
+    private List<String> preferredSources = new ArrayList<String>();;
 
     private static void initLogFile() {
         try {
@@ -78,7 +79,7 @@ public class FeedSpeakServlet extends HttpServlet {
      */
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        initLogFile();
+        //initLogFile();
 
         // Create a dict of people we know.
         //TODO: UserAccounts with mapping to source feed preferences in SQLite?
