@@ -18,6 +18,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -71,6 +72,9 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
 
             AccessToken accessToken = null;
             try {
+                RequestToken requestToken = twitter.getOAuthRequestToken();
+                
+                accessToken = twitter.getOAuthAccessToken(requestToken);
                 accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
 
                 out.println(accessToken.getToken());
