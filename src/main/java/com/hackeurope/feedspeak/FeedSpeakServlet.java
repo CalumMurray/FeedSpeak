@@ -118,6 +118,8 @@ public class FeedSpeakServlet extends HttpServlet {
 
         //TODO: Other feeds...
         appendBBC(name);
+        
+        appendSports(name);
     }
 
 //    private String getUsersTweets() {
@@ -138,6 +140,23 @@ public class FeedSpeakServlet extends HttpServlet {
 //        }
 //        return bbcMessage;
 //    }
+    
+    private void appendSports(String name){
+        
+        Verb saySportsVerb = new Verb("Say", "Yahoo Soccer Headlines for " + name + ": ");
+        saySportsVerb.set("name", "en-gb");
+        
+        try {
+            twimlResponse.append(saySportsVerb);
+            List<String> headlines = BBC.getNewsHeadlines();
+            appendList(saySportsVerb, headlines);
+            } catch (TwiMLException ex) 
+            {
+                System.err.println("Problem appending SAY verb(s) to TwiMLResponse");
+            }
+    }
+    
+    
 
     private void appendBBC(String name) {
         Verb sayBBCVerb = new Verb("Say", "BBC Headlines for " + name + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
