@@ -7,11 +7,19 @@ package com.hackeurope.feedspeak;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import twitter4j.Twitter;
+import twitter4j.TwitterException;
+import twitter4j.TwitterFactory;
+import twitter4j.auth.AccessToken;
+import twitter4j.conf.Configuration;
+import twitter4j.conf.ConfigurationBuilder;
 
 /**
  *
@@ -47,12 +55,31 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             out.println("<h1>Servlet TwitterAuthCallbackServlet at " + request.getContextPath() + "</h1>");
 
             out.println("<h2>");
-            Map<String, String[]> parameters = request.getParameterMap();
-            for (String parameter : parameters.keySet()) {
-                out.println(parameter);
-                out.println(parameters.get(parameter));
-                //your code here
+
+            String oauth_token = request.getParameter("oauth_token");
+            String oauth_verifier = request.getParameter("oauth_verifier");
+
+
+
+
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
+            builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
+            Configuration configuration = builder.build();
+            TwitterFactory factory = new TwitterFactory(configuration);
+            Twitter twitter = factory.getInstance();
+
+            AccessToken accessToken = null;
+            try {
+                accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
+
+                out.println(accessToken.getToken());
+                out.println(accessToken.getTokenSecret());
+            } catch (TwitterException ex) {
+                out.println("error");
+                Logger.getLogger(TwitterAuthCallbackServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
+
             out.println("</h2>");
             out.println("</body>");
             out.println("</html>");
