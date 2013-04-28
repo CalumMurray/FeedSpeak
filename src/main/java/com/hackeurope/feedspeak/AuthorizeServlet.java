@@ -53,10 +53,12 @@ public class AuthorizeServlet extends HttpServlet {
             twitter.setOAuthConsumer("aTR1FAEsR0hAj9w47ko9Tg", "XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
 
             RequestToken requestToken = twitter.getOAuthRequestToken();
-
+            
+            //twitter.getOAuthAccessToken();
             AccessToken accessToken = null;
             
-            response.sendRedirect(requestToken.getAuthorizationURL());
+            response.sendRedirect(requestToken.getAuthenticationURL());
+            
             //request.getRequestDispatcher(requestToken.getAuthorizationURL()).forward(request, response);
             
             /*while (null == accessToken) {
