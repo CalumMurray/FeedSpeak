@@ -19,6 +19,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
+import twitter4j.auth.RequestToken;
 import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
@@ -60,8 +61,7 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
 
             out.println("<h2>");
 
-            String oauth_verifier = request.getParameter("oauth_verifier");
-            
+            String oauth_verifier = request.getParameter("oauth_verifier"); 
             
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
@@ -72,7 +72,8 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
 
             AccessToken accessToken = null;
             try {
-                accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
+                RequestToken requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
+                accessToken = twitter.getOAuthAccessToken(requestToken, oauth_verifier);
 
                 out.println(accessToken.getToken());
                 out.println(accessToken.getTokenSecret());
