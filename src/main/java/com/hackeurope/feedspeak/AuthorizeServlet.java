@@ -20,6 +20,7 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
 import twitter4j.auth.RequestToken;
+import twitter4j.conf.Configuration;
 import twitter4j.conf.ConfigurationBuilder;
 
 /**
@@ -49,35 +50,47 @@ public class AuthorizeServlet extends HttpServlet {
 
              TwitterFactory tf = new TwitterFactory(cb.build());*/
 
-            Twitter twitter = TwitterFactory.getSingleton();
-            twitter.setOAuthConsumer("aTR1FAEsR0hAj9w47ko9Tg", "XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
+            //Twitter twitter = TwitterFactory.getSingleton();
+            ConfigurationBuilder builder = new ConfigurationBuilder();
+            builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
+            builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
+            Configuration configuration = builder.build();
+            TwitterFactory factory = new TwitterFactory(configuration);
+            Twitter twitter = factory.getInstance();
+            //TwitterFactory tf = new TwitterFactory();
+            //tf.setOAuthConsumer(null, null);
+
+            try {
+                //twitter.setOAuthConsumer("aTR1FAEsR0hAj9w47ko9Tg", );
+            } catch (IllegalStateException ise) {
+            }
 
             RequestToken requestToken = twitter.getOAuthRequestToken();
-            
+
             //twitter.getOAuthAccessToken();
             AccessToken accessToken = null;
-            
+
             response.sendRedirect(requestToken.getAuthenticationURL());
-            
+
             //request.getRequestDispatcher(requestToken.getAuthorizationURL()).forward(request, response);
-            
+
             /*while (null == accessToken) {
                 
 
-                System.out.println("Open the following URL and grant access to your account:");
-                System.out.println(requestToken.getAuthorizationURL());
-                System.out.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
+             System.out.println("Open the following URL and grant access to your account:");
+             System.out.println(requestToken.getAuthorizationURL());
+             System.out.print("Enter the PIN(if aviailable) or just hit enter.[PIN]:");
 
-                try {
-                        accessToken = twitter.getOAuthAccessToken();
-                } catch (TwitterException te) {
-                    if (401 == te.getStatusCode()) {
-                        System.out.println("Unable to get the access token.");
-                    } else {
-                        te.printStackTrace();
-                    }
-                }
-            }*/
+             try {
+             accessToken = twitter.getOAuthAccessToken();
+             } catch (TwitterException te) {
+             if (401 == te.getStatusCode()) {
+             System.out.println("Unable to get the access token.");
+             } else {
+             te.printStackTrace();
+             }
+             }
+             }*/
 
         } catch (TwitterException ex) {
             Logger.getLogger(AuthorizeServlet.class.getName()).log(Level.SEVERE, null, ex);
