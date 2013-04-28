@@ -71,8 +71,9 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             try {
                 RequestToken requestToken = twitter.getOAuthRequestToken();
                 requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
-                TwitterFactory.getSingleton().getOAuthAccessToken(requestToken, oauth_verifier);
-                accessToken = twitter.getOAuthAccessToken(requestToken);
+                accessToken = twitter.getOAuthAccessToken(requestToken, oauth_verifier);
+                
+                //accessToken = twitter.getOAuthAccessToken(requestToken);
                 //accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
 
                 out.println(accessToken.getToken());
