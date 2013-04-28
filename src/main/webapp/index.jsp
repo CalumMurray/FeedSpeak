@@ -25,7 +25,7 @@
             <div id="bd" role="main"> 
                 
 
-                <form class="configureForm" action="${pageContext.request.contextPath}/auth" method="POST" onsubmit="return validateLogin();" >
+                <form class="configureForm" action="auth" method="POST" onsubmit="return validateLogin();" >
                    <!-- <div class="formtitle">Configure FeedSpeak</div> -->
 
                     <div class="input">

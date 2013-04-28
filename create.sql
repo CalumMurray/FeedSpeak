@@ -10,8 +10,8 @@ CREATE  TABLE IF NOT EXISTS `FeedSpeakDB`.`users` (
   `user_id` INT NOT NULL AUTO_INCREMENT,
   `phone_number` VARCHAR(15) NOT NULL ,
   `name` VARCHAR(45) NOT NULL ,
-  `oauth_token` VARCHAR(255) NULL ,
-  `oauth_token_secret` VARCHAR(255) NULL ,
+  `oauth_token` VARCHAR(255) NULL DEFAULT NULL ,
+  `oauth_token_secret` VARCHAR(255) NULL DEFAULT NULL ,
   PRIMARY KEY (`user_id`) ,
   UNIQUE INDEX `phone_number_UNIQUE` (`user_id` ASC) )
 ENGINE = InnoDB;
@@ -44,8 +44,8 @@ ENGINE = InnoDB;
 
 USE `FeedSpeakDB` ;
 
-INSERT INTO sources VALUES (0, "twitter");
-INSERT INTO sources VALUES (1, "bbc");
+INSERT INTO sources VALUES (1, "twitter");
+INSERT INTO sources VALUES (2, "bbc");
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
