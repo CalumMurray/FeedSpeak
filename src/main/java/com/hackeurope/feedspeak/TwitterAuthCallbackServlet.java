@@ -70,7 +70,7 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             AccessToken accessToken = null;
             try {
                 RequestToken requestToken = twitter.getOAuthRequestToken();
-                requestToken = new RequestToken(oauth_token, oauth_verifier);
+                requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
                 
                 accessToken = twitter.getOAuthAccessToken(requestToken);
                 //accessToken = twitter.getOAuthAccessToken(oauth_token, oauth_verifier);
@@ -78,7 +78,7 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
                 out.println(accessToken.getToken());
                 out.println(accessToken.getTokenSecret());
             } catch (TwitterException ex) {
-                out.println("error");
+                out.println("error" + ex.getErrorMessage());
                 Logger.getLogger(TwitterAuthCallbackServlet.class.getName()).log(Level.SEVERE, null, ex);
             }
 
