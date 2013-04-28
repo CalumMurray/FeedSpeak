@@ -42,7 +42,7 @@ public class AuthorizeServlet extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response)
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         //Set user session bean to be inserted to database.  Minus the twitter tokens.
         user.setName(request.getParameter("name"));
@@ -106,20 +106,6 @@ public class AuthorizeServlet extends HttpServlet {
         } catch (TwitterException ex) {
             Logger.getLogger(AuthorizeServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-
-    /**
-     * Handles the HTTP
-     * <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
     }
 
     private static void storeAccessToken(int useId, AccessToken accessToken) {
