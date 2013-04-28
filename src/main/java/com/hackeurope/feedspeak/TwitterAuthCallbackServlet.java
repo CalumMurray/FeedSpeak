@@ -45,51 +45,28 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        String oauth_verifier = request.getParameter("oauth_verifier"); 
 
+        ConfigurationBuilder builder = new ConfigurationBuilder();
+        builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
+        builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
+        Configuration configuration = builder.build();
+        TwitterFactory factory = new TwitterFactory(configuration);
+        Twitter twitter = factory.getInstance();
 
-        PrintWriter out = response.getWriter();
+        AccessToken accessToken = null;
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet TwitterAuthCallbackServlet</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet TwitterAuthCallbackServlet at " + request.getContextPath() + "</h1>");
+            RequestToken requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
+            accessToken = twitter.getOAuthAccessToken(requestToken, oauth_verifier);
 
-            out.println("<h2>");
-
-            String oauth_verifier = request.getParameter("oauth_verifier"); 
-            
-            ConfigurationBuilder builder = new ConfigurationBuilder();
-            builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
-            builder.setOAuthConsumerSecret("XDSn1TTobWDBy46gZAfm6ya2kYkmli30B2vD2ixxpMA");
-            Configuration configuration = builder.build();
-            TwitterFactory factory = new TwitterFactory(configuration);
-            Twitter twitter = factory.getInstance();
-
-            AccessToken accessToken = null;
-            try {
-                RequestToken requestToken = (RequestToken) request.getSession().getAttribute("requestToken");
-                accessToken = twitter.getOAuthAccessToken(requestToken, oauth_verifier);
-
-                out.println(accessToken.getToken());
-                out.println(accessToken.getTokenSecret());
-                storeUserDetails(request, accessToken.getToken(), accessToken.getTokenSecret());
-            } catch (TwitterException ex) {
-                out.println("error");
-                Logger.getLogger(TwitterAuthCallbackServlet.class.getName()).log(Level.SEVERE, null, ex);
-            }
-
-            out.println("</h2>");
-            out.println("</body>");
-            out.println("</html>");
-            
-            //request.getRequestDispatcher("authConfirmed.jsp").forward(request, response);
-
-        } finally {
-            out.close();
+            storeUserDetails(request, accessToken.getToken(), accessToken.getTokenSecret());
+        } catch (TwitterException ex) {
+            Logger.getLogger(TwitterAuthCallbackServlet.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+            
+        request.getRequestDispatcher("authConfirmed.jsp").forward(request, response);
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
