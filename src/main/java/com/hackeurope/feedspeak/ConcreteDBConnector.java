@@ -100,7 +100,7 @@ public class ConcreteDBConnector extends DatabaseConnector {
         try {
             Connection connection = getConnection();
             
-            String selectString = "SELECT * FROM users "
+            String selectString = "SELECT sources.source_name FROM users "
                                 + "JOIN user_sources ON users.user_id = user_sources.user_id "
                                 + "JOIN sources ON user_sources.source_id = sources.source_id "
                                 + "WHERE users.user_id = ?;";
@@ -111,7 +111,7 @@ public class ConcreteDBConnector extends DatabaseConnector {
             
             while (resultSet.next())
             {
-                sources.add(resultSet.getString("source_name"));
+                sources.add(resultSet.getString(0));
             }
             
             closeConnection();
