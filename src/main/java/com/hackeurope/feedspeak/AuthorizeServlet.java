@@ -30,6 +30,8 @@ import twitter4j.conf.ConfigurationBuilder;
 @WebServlet(name = "AuthorizeServlet", urlPatterns = {"/auth"})
 public class AuthorizeServlet extends HttpServlet {
 
+    private User user;
+
     /**
      * Handles the HTTP
      * <code>GET</code> method.
@@ -42,6 +44,15 @@ public class AuthorizeServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        //Set user session bean to be inserted to database.  Minus the twitter tokens.
+        user.setName(request.getParameter("name"));
+        user.setPhoneNumber(request.getParameter("phoneNumber"));
+        user.setIncludeTwitter(request.getParameter("twitter") == "on" ? true : false);//Does thi give a boolean?
+        user.setIncludeBBC(request.getParameter("twitter") == "on" ? true : false);
+
+        request.getSession().setAttribute("user", user);
+        
+        
         try {
             /*            ConfigurationBuilder cb = new ConfigurationBuilder();
              cb.setDebugEnabled(true)
