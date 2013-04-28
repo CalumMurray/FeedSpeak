@@ -64,7 +64,8 @@ public class DatabaseConnector {
 
     public void closeConnection() {
         try {
-            connect.close();
+            if (connect != null)
+                connect.close();
         } catch (SQLException ex) {
             Logger.getLogger(DatabaseConnector.class.getName()).log(Level.SEVERE, null, ex);
         }

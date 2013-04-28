@@ -30,13 +30,15 @@ import org.apache.commons.lang.StringEscapeUtils;
 @WebServlet(name = "FeedSpeakServlet", urlPatterns = {"/tweets"})
 public class FeedSpeakServlet extends HttpServlet {
 
-    public static final String ACCOUNT_SID = "AC.....";
-    public static final String AUTH_TOKEN = ".......";
+//    public static final String ACCOUNT_SID = "AC.....";
+//    public static final String AUTH_TOKEN = ".......";
     private HashMap<String, String> callers = new HashMap<String, String>();
+    private ConcreteDBConnector dbConnection;
     private TwiMLResponse twimlResponse;
-    private String message;
+
     private String fromNumber;
-    private String callerName;
+    private User user;
+    private List<String> preferredSources;
 
     private static void initLogFile() {
         try {
@@ -80,15 +82,19 @@ public class FeedSpeakServlet extends HttpServlet {
 
         // Create a dict of people we know.
         //TODO: UserAccounts with mapping to source feed preferences in SQLite?
-        callers.put("+447933298892", "Calum");
-        callers.put("+447951751012", "Jack");
-        callers.put("+447835218616", "Neil");
+//        callers.put("+447933298892", "Calum");
+//        callers.put("+447951751012", "Jack");
+//        callers.put("+447835218616", "Neil");
         //...
-
+        
         //Get caller's number
         fromNumber = request.getParameter("From");
-        callerName = callers.get(fromNumber);
-
+        fromNumber = fromNumber.replace("+44", "0");
+        user = dbConnection.getUserByPhoneNumber(fromNumber);
+        
+        if (user != null)
+            preferredSources = dbConnection.getUsersSources(user);
+        
         twimlResponse = new TwiMLResponse();
 
         try {
@@ -104,22 +110,20 @@ public class FeedSpeakServlet extends HttpServlet {
     }
 
     private void formulateSayMessage() {
-        String name;
 
-        if (callerName == null) {
-            // Use a generic name - No user account
-            name = "Monkey";
-        } else {
-            // Use the caller's name - Existing customer
-            name = callerName;
+        if (preferredSources.contains("twitter"))
+        {
+            appendTweets();
         }
-
-        appendTweets(name);
-
+        if (preferredSources.contains("bbc"))
+        {    
+            appendBBC();
+        }   
+        if (preferredSources.contains("sport"))
+        {    
+            appendSports();
+        }   
         //TODO: Other feeds...
-        appendBBC(name);
-        
-        appendSports(name);
     }
 
 //    private String getUsersTweets() {
@@ -141,9 +145,9 @@ public class FeedSpeakServlet extends HttpServlet {
 //        return bbcMessage;
 //    }
     
-    private void appendSports(String name){
+    private void appendSports(){
         
-        Verb saySportsVerb = new Verb("Say", "Yahoo Soccer Headlines for " + name + ": ");
+        Verb saySportsVerb = new Verb("Say", "Yahoo Soccer Headlines for " + user.getName() + ": ");
         saySportsVerb.set("name", "en-gb");
         
         try {
@@ -158,8 +162,8 @@ public class FeedSpeakServlet extends HttpServlet {
     
     
 
-    private void appendBBC(String name) {
-        Verb sayBBCVerb = new Verb("Say", "BBC Headlines for " + name + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+    private void appendBBC() {
+        Verb sayBBCVerb = new Verb("Say", "BBC Headlines for " + user.getName() + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
         sayBBCVerb.set("name", "en-gb");
         try {
             twimlResponse.append(sayBBCVerb);
@@ -173,8 +177,8 @@ public class FeedSpeakServlet extends HttpServlet {
         }
     }
 
-    private void appendTweets(String name) {
-        Verb sayTweetsVerb = new Verb("Say", "Tweets for " + name + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
+    private void appendTweets() {
+        Verb sayTweetsVerb = new Verb("Say", "Tweets for " + user.getName() + ": ");// + getUsersTweets()/*"Hey " + name + ", these are your personal feeds. I've got a longer message now.  I wonder how long I can make this message.  Am I still going?  This is crazy! Tested some punctuation as well."*/);
         sayTweetsVerb.set("language", "en");
 
         try {

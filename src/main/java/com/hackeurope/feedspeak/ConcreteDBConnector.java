@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -21,8 +22,10 @@ public class ConcreteDBConnector extends DatabaseConnector {
         try {
             Connection connection = getConnection();
             
-            String insertUsersString = "INSERT INTO users VALUES (null, ?, ?, ?, ?);";
-            PreparedStatement prepUserStatement = connection.prepareStatement(insertUsersString);
+            String insertUsersString = "INSERT INTO "
+                    + "users (phone_number,name, oauth_token, oauth_token_secret) VALUES (?, ?, ?, ?);";
+            PreparedStatement prepUserStatement = connection.prepareStatement(insertUsersString, Statement.RETURN_GENERATED_KEYS);
+            
             prepUserStatement.setString(1, newUser.getPhoneNumber());
             prepUserStatement.setString(2, newUser.getName());
             prepUserStatement.setString(3, newUser.getOauthToken());
@@ -33,13 +36,13 @@ public class ConcreteDBConnector extends DatabaseConnector {
             ResultSet generatedKeys = prepUserStatement.getGeneratedKeys();
             while (generatedKeys.next())
             {
-                userID = generatedKeys.getInt("user_id");
+                userID = generatedKeys.getInt(1);
             }
             
             //Insert user's sources
             if (twitter)
             {
-                String insertLinkString = "INSERT INTO user_sources VALUES (null, ?, ?);";
+                String insertLinkString = "INSERT INTO user_sources (user_id, source_id) VALUES (?, ?);";
                 PreparedStatement prepLinkStatement = connection.prepareStatement(insertLinkString);
                 prepLinkStatement.setInt(1, userID);
                 prepLinkStatement.setInt(2, 0);//Twitter
@@ -47,7 +50,7 @@ public class ConcreteDBConnector extends DatabaseConnector {
             }
             if (bbc)
             {
-                String insertLinkString = "INSERT INTO user_sources VALUES (null, ?, ?);";
+                String insertLinkString = "INSERT INTO user_sources (user_id, source_id) VALUES (?, ?);";
                 PreparedStatement prepLinkStatement = connection.prepareStatement(insertLinkString);
             
                 prepLinkStatement.setInt(1, userID);
