@@ -57,7 +57,6 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
 
             out.println("<h2>");
 
-            String oauth_token = request.getParameter("oauth_token");
             String oauth_verifier = request.getParameter("oauth_verifier");
 
             ConfigurationBuilder builder = new ConfigurationBuilder();
