@@ -49,6 +49,7 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             out.println("<h2>");
             Map<String, String[]> parameters = request.getParameterMap();
             for (String parameter : parameters.keySet()) {
+                out.println(parameter);
                 out.println(parameters.get(parameter));
                 //your code here
             }
