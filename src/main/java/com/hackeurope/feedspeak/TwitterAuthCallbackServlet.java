@@ -45,16 +45,16 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet TwitterAuthCallbackServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
 
+            out.println("</h2>");
             Map<String, String[]> parameters = request.getParameterMap();
             for (String parameter : parameters.keySet()) {
-                if (parameter.toLowerCase().startsWith("question")) {
-                    out.println(parameters.get(parameter));
-                    //your code here
-                }
+                out.println(parameters.get(parameter));
+                //your code here
             }
+            out.println("</h2>");
+            out.println("</body>");
+            out.println("</html>");
 
         } finally {
             out.close();
