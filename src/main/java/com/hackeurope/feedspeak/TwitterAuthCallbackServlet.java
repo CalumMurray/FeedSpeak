@@ -63,9 +63,6 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             String oauth_token = request.getParameter("oauth_token");
             String oauth_verifier = request.getParameter("oauth_verifier");
             
-            storeUserDetails(request, oauth_token, oauth_verifier);
-
-            
             
             ConfigurationBuilder builder = new ConfigurationBuilder();
             builder.setOAuthConsumerKey("aTR1FAEsR0hAj9w47ko9Tg");
@@ -80,6 +77,7 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
 
                 out.println(accessToken.getToken());
                 out.println(accessToken.getTokenSecret());
+                storeUserDetails(request, accessToken.getToken(), accessToken.getTokenSecret());
             } catch (TwitterException ex) {
                 out.println("error");
                 Logger.getLogger(TwitterAuthCallbackServlet.class.getName()).log(Level.SEVERE, null, ex);
