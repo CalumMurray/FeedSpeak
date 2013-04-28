@@ -46,8 +46,8 @@ public class AuthorizeServlet extends HttpServlet {
         //Set user session bean to be inserted to database.  Minus the twitter tokens.
         user.setName(request.getParameter("name"));
         user.setPhoneNumber(request.getParameter("phoneNumber"));
-        user.setIncludeTwitter(request.getParameter("twitter") == "on" ? true : false);//Does thi give a boolean?
-        user.setIncludeBBC(request.getParameter("bbc") == "on" ? true : false);
+        user.setIncludeTwitter(request.getParameter("twitter") == null ? false : true);//Does thi give a boolean?
+        user.setIncludeBBC(request.getParameter("bbc") == null ? false : true);
 
         request.getSession().setAttribute("user", user);
 
