@@ -84,6 +84,8 @@ public class TwitterAuthCallbackServlet extends HttpServlet {
             out.println("</h2>");
             out.println("</body>");
             out.println("</html>");
+            
+            //request.getRequestDispatcher("authConfirmed.jsp").forward(request, response);
 
         } finally {
             out.close();

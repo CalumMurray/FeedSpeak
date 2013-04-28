@@ -46,6 +46,7 @@ USE `FeedSpeakDB` ;
 
 INSERT INTO sources VALUES (1, "twitter");
 INSERT INTO sources VALUES (2, "bbc");
+INSERT INTO sources VALUES (3, "sport");
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
