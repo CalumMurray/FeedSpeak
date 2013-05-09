@@ -3,7 +3,7 @@
 cd ~/FeedSpeak
 
 TOMCAT_INIT=/etc/init.d/tomcat7;
-OLD_DEPLOYMENT=/var/lib/tomcat7/webapps/ROOT
+OLD_DEPLOYMENT=/var/lib/tomcat7/webapps/FeedSpeak
 
 #get changes from git
 echo "Updating from remote repository..."
